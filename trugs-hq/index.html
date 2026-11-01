@@ -275,7 +275,7 @@ button { cursor: pointer; }
       <label class="toggle" for="optShadow">Sun shadows <input type="checkbox" id="optShadow" checked></label>
     </div>
     <button class="btn primary wide" id="tourBtn">Start suite tour</button>
-    <button class="btn wide" id="glbBtn">Export model (.glb)</button>
+    <!--GLB-START--><button class="btn wide" id="glbBtn">Export model (.glb)</button><!--GLB-END-->
   </section>
 
   <section class="pane" data-pane="floors" role="tabpanel" aria-labelledby="tab-floors" hidden>
@@ -3074,8 +3074,8 @@ function buildUI() {
   const toggle = $('panelToggle');
   toggle.addEventListener('click', () => togglePanel($('panel').classList.contains('collapsed')));
   if (IS_MOBILE) togglePanel(false);
-  if (window.self !== window.top) $('glbBtn').hidden = true;
-  $('glbBtn').addEventListener('click', exportGLB);
+  const glb = $('glbBtn');
+  if (glb) { if (window.self !== window.top) glb.hidden = true; /*GLB-START*/glb.addEventListener('click', exportGLB);/*GLB-END*/ }
   // canvas interaction
   const cv = $('scene'); let down = null;
   cv.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY }; if (STATE.fly) STATE.fly = null; stopTour(); });
@@ -3111,6 +3111,7 @@ function startTour() {
 }
 function stopTour() { if (!STATE.tour) return; clearInterval(STATE.tour); STATE.tour = null; $('tourBtn').textContent = 'Start suite tour'; }
 
+/*GLB-START*/
 async function exportGLB() {
   const btn = $('glbBtn'); btn.disabled = true; btn.textContent = 'Preparing model…';
   try {
@@ -3137,6 +3138,7 @@ async function exportGLB() {
   setTimeout(() => { btn.disabled = false; btn.textContent = 'Export model (.glb)'; }, 3000);
 }
 
+/*GLB-END*/
 // ---------- frame loop ----------
 const clock = new THREE.Clock();
 let perf = { n: 0, t: 0, checked: false };
