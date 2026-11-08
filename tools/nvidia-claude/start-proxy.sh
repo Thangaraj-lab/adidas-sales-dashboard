@@ -7,4 +7,4 @@ set -a; . ./.env; set +a
 python3 -m venv .venv 2>/dev/null || true
 . .venv/bin/activate
 pip install -q 'litellm[proxy]'
-exec litellm --config litellm_config.yaml --port 4000
+exec litellm --config litellm_config.yaml --host 127.0.0.1 --port 4000

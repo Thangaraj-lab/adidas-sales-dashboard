@@ -16,3 +16,8 @@ nemotron-3.5-lightning-30b, minimax-m3.1-flash. Several catalog models (e.g. kim
 404 "Function not found for account", so availability is per account. List yours with:
 `curl -H "Authorization: Bearer $NVIDIA_API_KEY" https://integrate.api.nvidia.com/v1/models`
 Not tested: a full interactive Claude Code session (needs the local `claude` CLI).
+
+## Always use NVIDIA in this project
+Run once on your machine: `./use-nvidia-by-default.sh`. It writes `.claude/settings.local.json`
+(git-ignored) so plain `claude` in this repo uses the NVIDIA models. Start the proxy first
+(`./start-proxy.sh`); if it isn't running, Claude Code shows connection errors. Undo: delete that file.
