@@ -1,14 +1,26 @@
 # LiteLLM proxy: exposes an Anthropic-style /v1/messages endpoint for Claude Code
 # and forwards to NVIDIA NIM (OpenAI-compatible) using NVIDIA_API_KEY.
+# Models verified callable with the author's key on 2026-11-08; availability is per-account,
+# so if you get 404 "Function ... not found for account", pick another from /v1/models.
 model_list:
-  - model_name: nvidia-coder            # alias Claude Code will request
+  - model_name: nvidia-coder            # main model alias Claude Code requests
     litellm_params:
-      model: nvidia_nim/qwen/qwen3-coder-480b-a35b-instruct   # change to any model on build.nvidia.com
+      model: nvidia_nim/nvidia/nemotron-3-ultra-550b-a55b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+  - model_name: nvidia-fast             # small/fast model for background tasks
+    litellm_params:
+      model: nvidia_nim/nvidia/nemotron-3.5-lightning-30b-a3b
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+  - model_name: nvidia-alt              # alternative
+    litellm_params:
+      model: nvidia_nim/minimaxai/minimax-m3.1-flash
       api_key: os.environ/NVIDIA_API_KEY
       api_base: https://integrate.api.nvidia.com/v1
 
 litellm_settings:
   drop_params: true        # ignore Anthropic-only params NVIDIA doesn't accept
-  
+
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY
