@@ -1,0 +1,14 @@
+# LiteLLM proxy: exposes an Anthropic-style /v1/messages endpoint for Claude Code
+# and forwards to NVIDIA NIM (OpenAI-compatible) using NVIDIA_API_KEY.
+model_list:
+  - model_name: nvidia-coder            # alias Claude Code will request
+    litellm_params:
+      model: nvidia_nim/qwen/qwen3-coder-480b-a35b-instruct   # change to any model on build.nvidia.com
+      api_key: os.environ/NVIDIA_API_KEY
+      api_base: https://integrate.api.nvidia.com/v1
+
+litellm_settings:
+  drop_params: true        # ignore Anthropic-only params NVIDIA doesn't accept
+  
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
